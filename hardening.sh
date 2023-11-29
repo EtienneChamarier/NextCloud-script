@@ -3,46 +3,54 @@
 # [Etienne] Hardening
 #           OpenSSH - hardening
 # ------------------------------------------------------------------
-#
+
 # Sauvegarde de votre fichier de configuration existant, afin de pouvoir le restaurer dans le cas improbable où quelque chose se passerait mal.
-sudo cp /etc/ssh/sshd_config /etc/ssh/ssh
+#sudo cp /etc/ssh/sshd_config /etc/ssh/ssh_config_backup
+# Création du répertoire sshd_config.d s'il n'existe pas
+if [ ! -d "/etc/ssh/sshd_config.d" ]; then
+    # Créer le répertoire s'il n'existe pas
+    sudo mkdir -p /etc/ssh/sshd_config.d
+
+    # Ajouter la ligne au fichier sshd_config
+    echo "Include /etc/ssh/sshd_config.d/*.conf" | sudo tee -a /etc/ssh/sshd_config > /dev/null
+# Création du fichier hardening dans /etc/ssh/sshd_config.d
+sudo touch /etc/ssh/sshd_config.d/hardening
 #
 # options actuellement configurées.
 sudo sshd -t
 #
-# configuration de la permission.
-sudo sed -i 's/PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/ssh_config
+# Configuration de la permission dans le fichier hardening.
+sudo sed -i 's/PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config.d/hardening
 #
-# Limitation du nombre de connexion. 
-sudo sed -i 's/MaxAuthTries.*/MaxAuthTries 3/' /etc/ssh/ssh_config
+# Limitation du nombre de connexions dans le fichier hardening.
+sudo sed -i 's/MaxAuthTries.*/MaxAuthTries 3/' /etc/ssh/sshd_config.d/hardening
 #
-# Délai de connexion.
-sudo sed -i 's/LoginGraceTime.*/LoginGraceTime 20/' /etc/ssh/ssh_config
+# Délai de connexion dans le fichier hardening.
+sudo sed -i 's/LoginGraceTime.*/LoginGraceTime 20/' /etc/ssh/sshd_config.d/hardening
 #
-# Désactivation de l'authentification. 
-sudo sed -i 's/PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/ssh_config
+# Désactivation de l'authentification dans le fichier hardening.
+sudo sed -i 's/PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config.d/hardening
 #
-# Authentification par mots de passe SSH.
-sudo sed -i 's/PasswordAuthentification.*/PasswordAuthentification no/' /etc/ssh/ssh_config
+# Authentification par mots de passe SSH dans le fichier hardening.
+sudo sed -i 's/PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config.d/hardening
 #
-# Désactivation de la methode d'authentification ChallengeResponseAuthentication.
-sudo sed -i 's/ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/ssh_config
+# Désactivation de la méthode d'authentification ChallengeResponseAuthentication dans le fichier hardening.
+sudo sed -i 's/ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config.d/hardening
 #
-# Désactivation de la methode d'authentification KerberosAuthentication.
-sudo sed -i 's/KerberosAuthentication.*/KerberosAuthentication no/' /etc/ssh/ssh_config
+# Désactivation de la méthode d'authentification KerberosAuthentication dans le fichier hardening.
+sudo sed -i 's/KerberosAuthentication.*/KerberosAuthentication no/' /etc/ssh/sshd_config.d/hardening
 #
-# Désactivation de la methode d'authentification GSSAPIAuthentication.
-#sudo sed -i 's/GSSAPIAuthentication.*/GSSAPIAuthentication no/' /etc/ssh/ssh_configgit 
+# Désactivation de la méthode d'authentification GSSAPIAuthentication dans le fichier hardening.
+#sudo sed -i 's/GSSAPIAuthentication.*/GSSAPIAuthentication no/' /etc/ssh/sshd_config.d/hardening
 #
-# Désactivation  du X11 forwarding.
-sudo sed -i 's/X11Forwarding.*/X11Forwarding no/' /etc/ssh/ssh_config
+# Désactivation du X11 forwarding dans le fichier hardening.
+sudo sed -i 's/X11Forwarding.*/X11Forwarding no/' /etc/ssh/sshd_config.d/hardening
 #
-# Comme X11 forwarding il est peu utilisé donc on le désactive.
-sudo sed -i 's/PermitUserEnvironment.*/PermitUserEnvironment no/' /etc/ssh/ssh_config
+# Comme X11 forwarding est peu utilisé, on le désactive dans le fichier hardening.
+sudo sed -i 's/PermitUserEnvironment.*/PermitUserEnvironment no/' /etc/ssh/sshd_config.d/hardening
 #
-# # Désactivation  du DebianBanner.
-sudo sed -i 's/DebianBanner.*/DebianBanner no/' /etc/ssh/ssh_config
+# Désactivation du DebianBanner dans le fichier hardening.
+sudo sed -i 's/DebianBanner.*/DebianBanner no/' /etc/ssh/sshd_config.d/hardening
 #
-# redémarrage du serveur.
+# Redémarrage du serveur.
 sudo service ssh restart
-#
