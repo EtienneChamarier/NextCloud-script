@@ -54,4 +54,4 @@ sudo sed -i 's/DebianBanner.*/DebianBanner no/' /etc/ssh/sshd_config.d/hardening
 #
 # Redémarrage du serveur.
 sudo service ssh restart
-#
+fi
