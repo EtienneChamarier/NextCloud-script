@@ -3,7 +3,7 @@
 # [Etienne] Hardening
 #           OpenSSH - hardening
 # ------------------------------------------------------------------
-
+#
 # Sauvegarde de votre fichier de configuration existant, afin de pouvoir le restaurer dans le cas improbable où quelque chose se passerait mal.
 #sudo cp /etc/ssh/sshd_config /etc/ssh/ssh_config_backup
 # Création du répertoire sshd_config.d s'il n'existe pas
@@ -54,3 +54,4 @@ sudo sed -i 's/DebianBanner.*/DebianBanner no/' /etc/ssh/sshd_config.d/hardening
 #
 # Redémarrage du serveur.
 sudo service ssh restart
+#
