@@ -3,7 +3,7 @@
 # [Etienne] Hardening
 #           OpenSSH - hardening
 # ------------------------------------------------------------------
-#
+# TEST JOSS
 # Sauvegarde de votre fichier de configuration existant, afin de pouvoir le restaurer dans le cas improbable où quelque chose se passerait mal.
 sudo cp /etc/ssh/sshd_config /etc/ssh/ssh
 #
